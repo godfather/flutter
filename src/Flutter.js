@@ -57,6 +57,9 @@ var Flutter = module.exports = function(opts) {
     // set to a redis client to use it for caching instead of creating a new connection
     cacheClient: null,
 
+    // configure as true to disable redis and use expres current session
+    disableRedis: false,
+
     // cache duration. set to a falsy value to disable caching
     cache: 60000,
 
@@ -93,12 +96,15 @@ var Flutter = module.exports = function(opts) {
     "HMAC-SHA1"
   );
 
-  self.cache = self.opts.cacheClient;
 
-  if (!self.cache && self.opts.cache) {
-    self.debug('creating redis client');
-    self.cache = redis.createClient(self.opts.redis.port, self.opts.redis.host, self.opts.redis.options);
-    if (self.opts.redis.database) self.cache.select(self.opts.redis.database);
+  if(!self.opts.disableRedis)
+    self.cache = self.opts.cacheClient;
+
+    if (!self.cache && self.opts.cache) {
+      self.debug('creating redis client');
+      self.cache = redis.createClient(self.opts.redis.port, self.opts.redis.host, self.opts.redis.options);
+      if (self.opts.redis.database) self.cache.select(self.opts.redis.database);
+    }
   }
 
 
