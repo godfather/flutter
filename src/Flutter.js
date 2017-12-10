@@ -97,7 +97,7 @@ var Flutter = module.exports = function(opts) {
   );
 
 
-  if(!self.opts.disableRedis)
+  if(!self.opts.disableRedis) {
     self.cache = self.opts.cacheClient;
 
     if (!self.cache && self.opts.cache) {
